@@ -1,0 +1,21 @@
+precision mediump float;
+
+varying vec3 vColor;
+varying vec3 vNormal;
+varying vec3 vRay[10];
+
+uniform int uNumLights;
+
+void main(void) 
+{
+  float light = 1.0;
+  for(int i = 0; i < 10; i++)
+  {
+    if(i < uNumLights)
+    {
+      light *= 1.0-(max(dot(normalize(vNormal),normalize(vRay[i])),0.0)*(1.0/max(length(vRay[i])/1.2,0.00001)));
+    }
+  }
+
+  gl_FragColor = vec4((vColor*(0.25 + ((1.0-(light))*0.85))), 1.0);
+}
