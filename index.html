@@ -250,6 +250,7 @@ function outputJSON()
   var indexes = [];
   var lightposs = [];
 
+  //Gather all data into arrays
   for(var i = 0; i < tris.length; i++)
   {
     verts[verts.length] = tris[i].verts[0];
@@ -293,6 +294,33 @@ function outputJSON()
     lightposs[lightposs.length] = lights[i].position[2];
   }
 
+  //Pack into minimal element array
+  //(n^2, but who cares)
+  for(var i = 0; i < indexes.length; i++)
+  {
+    for(var j = i+1; j < indexes.length; j++)
+    {
+      if(verts[(indexes[i]*3)+0] == verts[(indexes[j]*3)+0] 
+      && verts[(indexes[i]*3)+1] == verts[(indexes[j]*3)+1] 
+      && verts[(indexes[i]*3)+2] == verts[(indexes[j]*3)+2] 
+      && colors[(indexes[i]*3)+0] == colors[(indexes[j]*3)+0] 
+      && colors[(indexes[i]*3)+1] == colors[(indexes[j]*3)+1] 
+      && colors[(indexes[i]*3)+2] == colors[(indexes[j]*3)+2] 
+      && normals[(indexes[i]*3)+0] == normals[(indexes[j]*3)+0] 
+      && normals[(indexes[i]*3)+1] == normals[(indexes[j]*3)+1] 
+      && normals[(indexes[i]*3)+2] == normals[(indexes[j]*3)+2])
+      {
+        verts.splice(indexes[j]*3,3);
+        colors.splice(indexes[j]*3,3);
+        normals.splice(indexes[j]*3,3);
+        indexes[j] = indexes[i];
+        for(var k = j+1; k < indexes.length; k++)
+          indexes[k]--;
+      }
+    }
+  }
+
+  //Pack into JSON object
   var Geo = {};
   Geo.verts = verts;
   Geo.colors = colors;
@@ -300,7 +328,61 @@ function outputJSON()
   Geo.indexes = indexes;
   Geo.lights = lightposs;
 
+  //Print JSON object
   document.getElementById('json_display').innerHTML = JSON.stringify(Geo);
+}
+
+function loadJSON()
+{
+  for(var i = tris.length; i > 0; i--)
+  {
+    currentTri = tris[0];
+    tris.splice(currentTri.programGeoListIndex,1);
+    glm.geoProgram.removeGeo(currentTri);
+    document.getElementById('tri_selector').removeChild(document.getElementById('tri_selector').children[tris.length]);
+  }
+  glm.geoProgram.compileStaticData();
+  var Geo = JSON.parse(document.getElementById('json_loader').value);
+  for(var i = 0; i < Geo.indexes.length/3; i++)
+  {
+    tris[tris.length] = new XGLGeo(
+    [
+    Geo.verts[(Geo.indexes[(i*3)+0]*3)+0],Geo.verts[(Geo.indexes[(i*3)+0]*3)+1],Geo.verts[(Geo.indexes[(i*3)+0]*3)+2], 
+    Geo.verts[(Geo.indexes[(i*3)+1]*3)+0],Geo.verts[(Geo.indexes[(i*3)+1]*3)+1],Geo.verts[(Geo.indexes[(i*3)+1]*3)+2], 
+    Geo.verts[(Geo.indexes[(i*3)+2]*3)+0],Geo.verts[(Geo.indexes[(i*3)+2]*3)+1],Geo.verts[(Geo.indexes[(i*3)+2]*3)+2], 
+    ],
+    [
+    Geo.colors[(Geo.indexes[(i*3)+0]*3)+0],Geo.colors[(Geo.indexes[(i*3)+0]*3)+1],Geo.colors[(Geo.indexes[(i*3)+0]*3)+2], 
+    Geo.colors[(Geo.indexes[(i*3)+1]*3)+0],Geo.colors[(Geo.indexes[(i*3)+1]*3)+1],Geo.colors[(Geo.indexes[(i*3)+1]*3)+2], 
+    Geo.colors[(Geo.indexes[(i*3)+2]*3)+0],Geo.colors[(Geo.indexes[(i*3)+2]*3)+1],Geo.colors[(Geo.indexes[(i*3)+2]*3)+2], 
+    ],
+    [
+    Geo.normals[(Geo.indexes[(i*3)+0]*3)+0],Geo.normals[(Geo.indexes[(i*3)+0]*3)+1],Geo.normals[(Geo.indexes[(i*3)+0]*3)+2], 
+    Geo.normals[(Geo.indexes[(i*3)+1]*3)+0],Geo.normals[(Geo.indexes[(i*3)+1]*3)+1],Geo.normals[(Geo.indexes[(i*3)+1]*3)+2], 
+    Geo.normals[(Geo.indexes[(i*3)+2]*3)+0],Geo.normals[(Geo.indexes[(i*3)+2]*3)+1],Geo.normals[(Geo.indexes[(i*3)+2]*3)+2], 
+    ],
+    [
+    0,
+    1,
+    2
+    ]
+    );
+    glm.geoProgram.addGeo(tris[tris.length-1]);
+  
+    currentTri = tris.length-1;
+
+    var trirep = document.createElement('div');
+    trirep.innerHTML=tris.length-1;
+    trirep.style.width='10px';
+    trirep.style.height='10px';
+    trirep.style.border='1px solid black;';
+    trirep.style.margin='2px';
+    trirep.setAttribute('onclick','editTri('+(tris.length-1)+')');
+    document.getElementById('tri_selector').appendChild(trirep);
+  }
+    
+  glm.geoProgram.compileStaticData();
+  dirtybit = true;
 }
 
 function tick()
@@ -390,6 +472,8 @@ window.addEventListener('keypress', function(e) { if(e.keyCode == 13) /*ENTER*/ 
   <input id='json_printer' type='button' value='output JSON' onclick='outputJSON();'></input><br />
   <img id='shadow' src='images/shadow.png' style='display:block;'></img>
   <div id='json_display' style='width:640px;'></div>
+  <textarea id='json_loader' cols='40' style='width:640px;'></textarea><br />
+  <input id='json_loader_button' type='button' value='load JSON' onclick='loadJSON();'></input>
 </div>
 
 <div id='select_area' style='float:left; margin:20px;'>
