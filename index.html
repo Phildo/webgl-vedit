@@ -406,7 +406,7 @@ function tick()
 }
 
 window.addEventListener('load', loadContent, false);
-window.addEventListener('keypress', function(e) { if(e.keyCode == 13) /*ENTER*/ { if(currentEditor == "light") saveLight(); else if(currentEditor == "tri") saveTri(); document.focus(); } }, false);
+window.addEventListener('keypress', function(e) { if(e.keyCode == 13) /*ENTER*/ { if(currentEditor == "light") saveLight(); else if(currentEditor == "tri") saveTri(); document.activeElement.blur(); glm.canvas.focus(); } }, false);
 </script>
 <body>
 
