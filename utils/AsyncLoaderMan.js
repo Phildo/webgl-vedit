@@ -1,6 +1,5 @@
 var AsyncLoaderMan = function()
 {
-
   this.loadBatch = function(batch)
   {
     for(var i = 0; i < batch.fileArray.length; i++)

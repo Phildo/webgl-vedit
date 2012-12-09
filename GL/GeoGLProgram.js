@@ -58,6 +58,7 @@ var GeoGLProgram = function (gl, vs, fs)
 
   that.compileStaticData = function()
   {
+    that.indexData = [];
     var currentVertOffset = 0;
     for(var i = 0; i < that.geos.length; i++)
     {
