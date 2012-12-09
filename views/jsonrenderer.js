@@ -3,24 +3,28 @@ function createJSONrenderer(delegate)
   console.log('creating jsonrenderer');
   //Create
   var jr = document.createElement('div');
+  jr.io = document.createElement('div');
   jr.inputbox = document.createElement('textarea');
   jr.outputbox = document.createElement('div');
   jr.parsebutton = createButton('load json', null);
   jr.stringifybutton = createButton('get json', null);
 
   //Style
-  jr.style.width = '640px';
-  jr.parsebutton.style.float = 'left';
+  jr.style.width = '800px';
+  jr.io.style.width = '640px';
+  jr.io.style.float = 'left';
   jr.parsebutton.style.display = 'block';
-  jr.stringifybutton.style.float = 'right';
+  jr.parsebutton.style.float = 'left';
   jr.stringifybutton.style.display = 'block';
+  jr.stringifybutton.style.float = 'left';
   jr.inputbox.style.width = '320px';
   jr.inputbox.style.margin = '0px';
   jr.inputbox.style.float = 'left';
   jr.outputbox.style.width = '320px';
   jr.outputbox.style.margin = '0px';
   jr.outputbox.style.padding = '0px';
-  jr.outputbox.style.float = 'right';
+  jr.outputbox.style.float = 'left';
+  jr.outputbox.style.overflow = 'scroll';
 
   //Functionality
   jr.parsebutton.addEventListener('click', 
@@ -28,6 +32,8 @@ function createJSONrenderer(delegate)
     {
       console.log('jsonrenderer parsebutton clicked');
       var newtris = [];
+      
+      if(!IsJsonString(jr.inputbox.value)) return;
       var geo = JSON.parse(jr.inputbox.value);
       for(var i = 0; i < geo.indexes.length/3; i++)
       {
@@ -129,9 +135,20 @@ function createJSONrenderer(delegate)
 
   //Construct
   jr.appendChild(jr.parsebutton);
+  jr.appendChild(jr.io);
+  jr.io.appendChild(jr.inputbox);
+  jr.io.appendChild(jr.outputbox);
   jr.appendChild(jr.stringifybutton);
-  jr.appendChild(jr.inputbox);
-  jr.appendChild(jr.outputbox);
 
   return jr;
+}
+
+function IsJsonString(str) 
+{
+  try {
+    JSON.parse(str);
+  } catch (e) {
+    return false;
+  }
+  return true;
 }

@@ -48,6 +48,11 @@ function createLighteditor(delegate)
     console.log('lighteditor fbblurred');
     delegate.lightContentChanged(le);
   }
+  le.fbChanged = function(fb)
+  {
+    console.log('lighteditor fbblurred');
+    delegate.lightContentChanged(le);
+  }
 
   //Construct
   le.appendChild(le.posEditor);

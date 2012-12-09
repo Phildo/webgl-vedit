@@ -10,6 +10,8 @@ function createLightselector(delegate)
 
   //Style
   ls.style.width = '150px';
+  ls.style.height = '320px';
+  ls.style.overflow = 'scroll';
   
   //Functionality
   ls.addSelectable = function()

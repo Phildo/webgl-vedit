@@ -8,6 +8,7 @@ function createTrieditor(delegate)
   te.vertEditor = document.createElement('div');
   te.colorEditor = document.createElement('div');
   te.normalEditor = document.createElement('div');
+  te.oldColors = null; //This is so bad why
 
   te.vertEditor.titlebox = document.createElement('div');
   te.vertEditor.titlebox.innerHTML = "Verts:";
@@ -42,10 +43,15 @@ function createTrieditor(delegate)
   te.setTri = function(tri)
   {
     console.log('trieditor settri');
+
+    //Oh god this is awful
     te.currentTri = tri;
-    //tri.colors = [0.8,0.8,0.0,0.8,0.8,0.0,0.8,0.8,0.0];
-    //glm.geoProgram.compileStaticData();
-    //dmm.dirtybit = true;
+    te.oldColors = tri.colors;
+    tri.colors = [1.0,1.0,0.0,1.0,1.0,0.0,1.0,1.0,0.0];
+    glm.geoProgram.compileStaticData();
+    dmm.dirtybit = true;
+    //So awful
+    
     for(var i = 0; i < 9; i++)
       te.vertEditor.inputs[i].box.value = te.currentTri.verts[i];
     for(var i = 0; i < 9; i++)
@@ -57,9 +63,16 @@ function createTrieditor(delegate)
   {
     console.log('trieditor cleartri');
     if(!te.currentTri) return;
-    //te.currentTri.colors = [0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5];
-    //glm.geoProgram.compileStaticData();
-    //dmm.dirtybit = true;
+
+    //Please god stop
+    if(te.currentTri.colors[0] == 1 && te.currentTri.colors[1] == 1 && te.currentTri.colors[2] == 0
+      && te.currentTri.colors[3] == 1 && te.currentTri.colors[4] == 1 && te.currentTri.colors[5] == 0
+      && te.currentTri.colors[6] == 1 && te.currentTri.colors[7] == 1 && te.currentTri.colors[8] == 0)
+      te.currentTri.colors = te.oldColors;
+    glm.geoProgram.compileStaticData();
+    dmm.dirtybit = true;
+    //No don't 
+
     for(var i = 0; i < 9; i++)
       te.vertEditor.inputs[i].box.value = '';
     for(var i = 0; i < 9; i++)
@@ -80,6 +93,11 @@ function createTrieditor(delegate)
       te.currentTri.normals[i] = te.normalEditor.inputs[i].box.value;
   }
   te.fbBlurred = function(fb)
+  {
+    console.log('trieditor fbblurred');
+    delegate.triContentChanged(te);
+  }
+  te.fbChanged = function(fb)
   {
     console.log('trieditor fbblurred');
     delegate.triContentChanged(te);

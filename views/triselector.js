@@ -10,6 +10,8 @@ function createTriselector(delegate)
 
   //Style
   ts.style.width = '150px';
+  ts.style.height = '320px';
+  ts.style.overflow = 'scroll';
   
   //Functionality
   ts.addSelectable = function()

@@ -32,8 +32,8 @@ function createFloatbox(delegate)
 
   //Functionality
   fb.box.value = DEFAULT_AMOUNT;
-  fb.inc.addEventListener('click', function(e) { if(!isNaN(parseFloat(fb.box.value))) fb.box.value = parseFloat(fb.box.value)+INC_AMOUNT; }, false);
-  fb.dec.addEventListener('click', function(e) { if(!isNaN(parseFloat(fb.box.value))) fb.box.value = parseFloat(fb.box.value)-DEC_AMOUNT; }, false);
+  fb.inc.addEventListener('click', function(e) { if(!isNaN(parseFloat(fb.box.value))) fb.box.value = parseFloat(fb.box.value)+INC_AMOUNT; delegate.fbChanged(fb); }, false);
+  fb.dec.addEventListener('click', function(e) { if(!isNaN(parseFloat(fb.box.value))) fb.box.value = parseFloat(fb.box.value)-DEC_AMOUNT; delegate.fbChanged(fb); }, false);
   fb.box.addEventListener('blur', function(e) { delegate.fbBlurred(fb); }, false);
 
   //Construct
