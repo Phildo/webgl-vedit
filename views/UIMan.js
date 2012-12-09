@@ -83,13 +83,13 @@ function UIMan()
   self.triContentChanged = function(triEditor)
   {
     console.log('uiman tricontentchanged');
-
+    cm.saveTri();
   }
 
   self.lightContentChanged = function(lightEditor)
   {
     console.log('uiman lightcontentchanged');
-
+    cm.saveLight();
   }
 
   self.newSelection = function(selector)
@@ -110,6 +110,16 @@ function UIMan()
           self.lightEditor.clearLight();
         break;
     }
+  }
+
+  self.sendStringifyRequest = function(renderer)
+  {
+    renderer.stringify(dmm.tris,dmm.lights);
+  }
+
+  self.setNewDataList = function(tris)
+  {
+    cm.setNewDataList(tris);
   }
 
   self.addTri = function()

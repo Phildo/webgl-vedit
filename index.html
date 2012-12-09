@@ -72,14 +72,14 @@ function tick()
 {
   requestAnimFrame(tick,glm.canvas);
 
-  if(im.up || im.w) { mat4.translate(glm.geoProgram.camMatData,[0,0,-0.3]); dmm.dirtybit = true; }
-  if(im.down || im.s) { mat4.translate(glm.geoProgram.camMatData,[0,0,0.3]); dmm.dirtybit = true; }
-  if(im.a) { mat4.translate(glm.geoProgram.camMatData,[-0.3,0,0]); dmm.dirtybit = true; }
-  if(im.d) { mat4.translate(glm.geoProgram.camMatData,[0.3,0,0]); dmm.dirtybit = true; }
-  if(im.space) { mat4.translate(glm.geoProgram.camMatData,[0,0.3,0]); dmm.dirtybit = true; }
-  if(im.shift) { mat4.translate(glm.geoProgram.camMatData,[0,-0.3,0]); dmm.dirtybit = true; }
-  if(im.left) { mat4.rotate(glm.geoProgram.camMatData,0.03,[0,1,0]); dmm.dirtybit = true; }
-  if(im.right) { mat4.rotate(glm.geoProgram.camMatData,-0.03,[0,1,0]); dmm.dirtybit = true; }
+  if(im.up || im.w) { mat4.translate(glm.geoProgram.camMatData,[0,0,-0.05]); dmm.dirtybit = true; }
+  if(im.down || im.s) { mat4.translate(glm.geoProgram.camMatData,[0,0,0.05]); dmm.dirtybit = true; }
+  if(im.a) { mat4.translate(glm.geoProgram.camMatData,[-0.05,0,0]); dmm.dirtybit = true; }
+  if(im.d) { mat4.translate(glm.geoProgram.camMatData,[0.05,0,0]); dmm.dirtybit = true; }
+  if(im.space) { mat4.translate(glm.geoProgram.camMatData,[0,0.05,0]); dmm.dirtybit = true; }
+  if(im.shift) { mat4.translate(glm.geoProgram.camMatData,[0,-0.05,0]); dmm.dirtybit = true; }
+  if(im.left) { mat4.rotate(glm.geoProgram.camMatData,0.02,[0,1,0]); dmm.dirtybit = true; }
+  if(im.right) { mat4.rotate(glm.geoProgram.camMatData,-0.02,[0,1,0]); dmm.dirtybit = true; }
 
   if(dmm.dirtybit)
   {

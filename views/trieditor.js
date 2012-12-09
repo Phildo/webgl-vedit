@@ -43,6 +43,9 @@ function createTrieditor(delegate)
   {
     console.log('trieditor settri');
     te.currentTri = tri;
+    //tri.colors = [0.8,0.8,0.0,0.8,0.8,0.0,0.8,0.8,0.0];
+    //glm.geoProgram.compileStaticData();
+    //dmm.dirtybit = true;
     for(var i = 0; i < 9; i++)
       te.vertEditor.inputs[i].box.value = te.currentTri.verts[i];
     for(var i = 0; i < 9; i++)
@@ -54,6 +57,9 @@ function createTrieditor(delegate)
   {
     console.log('trieditor cleartri');
     if(!te.currentTri) return;
+    //te.currentTri.colors = [0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5];
+    //glm.geoProgram.compileStaticData();
+    //dmm.dirtybit = true;
     for(var i = 0; i < 9; i++)
       te.vertEditor.inputs[i].box.value = '';
     for(var i = 0; i < 9; i++)

@@ -3,6 +3,23 @@ function ControllerMan()
   console.log('creating controllerman');
   var self = this;
 
+  self.setNewDataList = function(data)
+  {
+    console.log('controllerman setnewdatalist');
+
+    while(dmm.tris.length > 0)
+      dmm.removeTri(dmm.tris[0]);
+      uim.removeTri();
+
+    for(var i = 0; i < data.length; i++)
+    {
+      dmm.addTri(data[i]);
+      uim.addTri(data[i]);
+    }
+
+    glm.geoProgram.compileStaticData();
+  }
+
   self.addTri = function()
   {
     console.log('controllerman addtri');

@@ -29,7 +29,7 @@ function createJSONrenderer(delegate)
       console.log('jsonrenderer parsebutton clicked');
       var newtris = [];
       var geo = JSON.parse(jr.inputbox.value);
-      for(var i = 0; i < Geo.indexes.length/3; i++)
+      for(var i = 0; i < geo.indexes.length/3; i++)
       {
         newtris[newtris.length] = new XGLGeo(
           [
@@ -54,13 +54,13 @@ function createJSONrenderer(delegate)
           ]
         );
       }
-      delegate.setNewTriList(newtris);
+      delegate.setNewDataList(newtris);
     },
   false);
 
   jr.stringifybutton.addEventListener('click', function(e) { console.log('jsonrenderer stringifybutton clicked'); delegate.sendStringifyRequest(jr); }, false);
 
-  jr.stringify = function(tris)
+  jr.stringify = function(tris, lights)
   {
     console.log('jsonrenderer stringify');
     var verts = [];
@@ -94,7 +94,8 @@ function createJSONrenderer(delegate)
     {
       for(var j = i+1; j < indexes.length; j++)
       {
-        if(verts[(indexes[i]*3)+0] == verts[(indexes[j]*3)+0] 
+        if(indexes[i] < indexes[j]
+        && verts[(indexes[i]*3)+0] == verts[(indexes[j]*3)+0] 
         && verts[(indexes[i]*3)+1] == verts[(indexes[j]*3)+1] 
         && verts[(indexes[i]*3)+2] == verts[(indexes[j]*3)+2] 
         && colors[(indexes[i]*3)+0] == colors[(indexes[j]*3)+0] 
@@ -109,7 +110,7 @@ function createJSONrenderer(delegate)
           normals.splice(indexes[j]*3,3);
           indexes[j] = indexes[i];
           for(var k = j+1; k < indexes.length; k++)
-            indexes[k]--;
+            if(indexes[k] > indexes[j]) indexes[k]--;
         }
       }
     }
@@ -123,7 +124,7 @@ function createJSONrenderer(delegate)
     geo.lights = lightposs;
 
     //Print JSON object
-    jr.outputbox.getElementById('json_display').innerHTML = JSON.stringify(geo);
+    jr.outputbox.innerHTML = JSON.stringify(geo);
   }
 
   //Construct
