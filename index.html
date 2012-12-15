@@ -3,93 +3,53 @@
 <title>Vertex Editor</title>
 </head>
 
-<script type='text/javascript' src='DataModelMan.js'></script>
-<script type='text/javascript' src='ControllerMan.js'></script>
+<!-- GL Stuff -->
+<script type='text/javascript' src='views/GL/utils/gl-matrix.js'></script>
+<script type='text/javascript' src='views/GL/utils/webgl-utils.js'></script>
+<script type='text/javascript' src='views/GL/XGLGeo.js'></script>
+<script type='text/javascript' src='views/GL/XGLLight.js'></script>
+<script type='text/javascript' src='views/GL/XGLProgram.js'></script>
+<script type='text/javascript' src='views/GL/GeoGLProgram.js'></script>
+<script type='text/javascript' src='views/GL/GLMan.js'></script>
+<!-- Views -->
 <script type='text/javascript' src='views/floatbox.js'></script>
 <script type='text/javascript' src='views/selectable.js'></script>
-<script type='text/javascript' src='views/lighteditor.js'></script>
-<script type='text/javascript' src='views/trieditor.js'></script>
+<script type='text/javascript' src='views/pane.js'></script>
+<script type='text/javascript' src='views/propertyinspector.js'></script>
+<script type='text/javascript' src='views/objectselector.js'></script>
+<script type='text/javascript' src='views/positioninspector.js'></script>
+<script type='text/javascript' src='views/normalinspector.js'></script>
+<script type='text/javascript' src='views/colorinspector.js'></script>
+<script type='text/javascript' src='views/vertexinspector.js'></script>
+<script type='text/javascript' src='views/triangleinspector.js'></script>
+<script type='text/javascript' src='views/lightinspector.js'></script>
+<script type='text/javascript' src='views/triangleselector.js'></script>
 <script type='text/javascript' src='views/lightselector.js'></script>
-<script type='text/javascript' src='views/triselector.js'></script>
 <script type='text/javascript' src='views/jsonrenderer.js'></script>
-<script type='text/javascript' src='views/UIMan.js'></script>
-<script type='text/javascript' src='GL/utils/gl-matrix.js'></script>
-<script type='text/javascript' src='GL/utils/webgl-utils.js'></script>
-<script type='text/javascript' src='GL/GLMan.js'></script>
-<script type='text/javascript' src='GL/XGLProgram.js'></script>
-<script type='text/javascript' src='GL/GeoGLProgram.js'></script>
-<script type='text/javascript' src='GL/XGLGeo.js'></script>
-<script type='text/javascript' src='GL/XGLLight.js'></script>
-<script type='text/javascript' src='utils/InputMan.js'></script>
-<script type='text/javascript' src='utils/AsyncLoaderMan.js'></script>
+<script type='text/javascript' src='views/drawingarea.js'></script>
+<!-- Managers -->
+<script type='text/javascript' src='InputMan.js'></script>
+<script type='text/javascript' src='AsyncLoaderMan.js'></script>
+<script type='text/javascript' src='UIMan.js'></script>
+<script type='text/javascript' src='ControllerMan.js'></script>
+<script type='text/javascript' src='DataModelMan.js'></script>
+<!--<script type='text/javascript' src='views/DataModelMan.js'></script>
+<script type='text/javascript' src='views/ControllerMan.js'></script>-->
 
 <script type='text/javascript'>
 //Managers
-var glm;//GLMan
 var dmm;//DataModelMan
 var cm;//ControllerMan
 var uim;//UIMan
-var im;//InputMan
-var alm;//AsyncLoadMan
 
-function loadAsyncContent()
+function init()
 {
-  console.log('loadasynccontent');
-  //Load the shaders
-  alm = new AsyncLoaderMan();
-  alm.loadBatch(new AsyncLoaderBatch(
-    ['GL/shaders/geovshader.txt',
-    'GL/shaders/geofshader.txt'],
-    ['geovs','geofs'], 
-    init));
-}
-
-function init(asyncData)
-{
-  console.log('init');
-  //Init the men
-  glm = new GLMan(640, 320);
   dmm = new DataModelMan();
-  cm = new ControllerMan();
-  uim = new UIMan();
-  im = new InputMan();
-
-  glm.setProgram("geo",asyncData.geovs,asyncData.geofs);
-  uim.initPage(glm.canvas);
-
-  cm.addLight();
-
-  glm.geoProgram.compileStaticData();
-
-  //Move the camera a bit
-  mat4.translate(glm.geoProgram.camMatData,[0,0,10.0]);
-
-  //Start the clock
-  requestAnimFrame(tick,glm.canvas);
+  cm = new ControllerMan(dmm);
+  uim = new UIMan(cm, dmm);
 }
 
-function tick()
-{
-  requestAnimFrame(tick,glm.canvas);
-
-  if(im.up || im.w) { mat4.translate(glm.geoProgram.camMatData,[0,0,-0.05]); dmm.dirtybit = true; }
-  if(im.down || im.s) { mat4.translate(glm.geoProgram.camMatData,[0,0,0.05]); dmm.dirtybit = true; }
-  if(im.a) { mat4.translate(glm.geoProgram.camMatData,[-0.05,0,0]); dmm.dirtybit = true; }
-  if(im.d) { mat4.translate(glm.geoProgram.camMatData,[0.05,0,0]); dmm.dirtybit = true; }
-  if(im.space) { mat4.translate(glm.geoProgram.camMatData,[0,0.05,0]); dmm.dirtybit = true; }
-  if(im.shift) { mat4.translate(glm.geoProgram.camMatData,[0,-0.05,0]); dmm.dirtybit = true; }
-  if(im.left) { mat4.rotate(glm.geoProgram.camMatData,0.02,[0,1,0]); dmm.dirtybit = true; }
-  if(im.right) { mat4.rotate(glm.geoProgram.camMatData,-0.02,[0,1,0]); dmm.dirtybit = true; }
-
-  if(dmm.dirtybit)
-  {
-    glm.draw();
-    dmm.dirtybit = false;
-  }
-}
-
-window.addEventListener('load', loadAsyncContent, false);
-window.addEventListener('keypress', function(e) { if(e.keyCode == 13) /*ENTER*/ { cm.saveLight(); cm.saveTri(); document.activeElement.blur(); glm.canvas.focus(); } }, false);
+window.addEventListener('load', init, false);
 </script>
 <body id='veditor'>
 

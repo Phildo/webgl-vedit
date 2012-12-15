@@ -1,7 +1,10 @@
 function createFloatbox(delegate)
 {
   console.log('creating floatbox');
+
   //Constants
+  var WIDTH = 50;
+  var HEIGHT = 20;
   var DEFAULT_AMOUNT = 0.0;
   var INC_AMOUNT = 0.1;
   var DEC_AMOUNT = 0.1;
@@ -16,7 +19,10 @@ function createFloatbox(delegate)
   fb.inc.innerHTML = '>';
 
   //Style
-  fb.style.width = '50px';
+  fb.style.width = WIDTH+'px';
+  fb.style.height = HEIGHT+'px';
+  fb.style.margin = '0px';
+  fb.style.padding = '0px';
   fb.box.style.display = 'block';
   fb.dec.style.width = '10px';
   fb.inc.style.width = '10px';
@@ -32,9 +38,10 @@ function createFloatbox(delegate)
 
   //Functionality
   fb.box.value = DEFAULT_AMOUNT;
-  fb.inc.addEventListener('click', function(e) { if(!isNaN(parseFloat(fb.box.value))) fb.box.value = parseFloat(fb.box.value)+INC_AMOUNT; delegate.fbChanged(fb); }, false);
-  fb.dec.addEventListener('click', function(e) { if(!isNaN(parseFloat(fb.box.value))) fb.box.value = parseFloat(fb.box.value)-DEC_AMOUNT; delegate.fbChanged(fb); }, false);
-  fb.box.addEventListener('blur', function(e) { delegate.fbBlurred(fb); }, false);
+  fb.inc.addEventListener('click', function(e) { if(!isNaN(parseFloat(fb.box.value))) fb.box.value = parseFloat(fb.box.value)+INC_AMOUNT; if(typeof delegate.fbChanged == 'function') delegate.fbChanged(fb,fb.box.value); }, false);
+  fb.dec.addEventListener('click', function(e) { if(!isNaN(parseFloat(fb.box.value))) fb.box.value = parseFloat(fb.box.value)-DEC_AMOUNT; if(typeof delegate.fbChanged == 'function') delegate.fbChanged(fb,fb.box.value); }, false);
+  fb.box.addEventListener('focus', function(e) { if(typeof delegate.fbFocused == 'function') delegate.fbFocused(fb); }, false);
+  fb.box.addEventListener('blur', function(e) { if(typeof delegate.fbBlurred == 'function') delegate.fbBlurred(fb); }, false);
 
   //Construct
   fb.appendChild(fb.dec);

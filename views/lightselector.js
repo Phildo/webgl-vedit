@@ -1,57 +1,65 @@
-function createLightselector(delegate)
+function createLightselector(delegate, model)
 {
   console.log('creating lightselector');
+
   //Constants
+  var HEIGHT = 100;
 
   //Create
-  var ls = document.createElement('div');
-  ls.selectables = [];
+  var ls = createObjectselector(delegate);
+  ls.titlebox.innerHTML = 'Lights:';
+  ls.addlightbutton = createButton('add light', function(e) { console.log('lightselector addlightbuttonclick'); if(typeof delegate.addLightButtonClicked == 'function') delegate.addLightButtonClicked(ls); });
+  ls.removelightbutton = createButton('remove light', function(e) { console.log('lightselector removelightbuttonclick'); if(typeof delegate.removeLightButtonClicked == 'function') delegate.removeLightButtonClicked(ls); });
   ls.selectedIndex = -1;
 
   //Style
-  ls.style.width = '150px';
-  ls.style.height = '320px';
-  ls.style.overflow = 'scroll';
+  ls.style.height = HEIGHT+'px';
   
   //Functionality
-  ls.addSelectable = function()
+  ls.populateWithData = function(lights,deltas)
   {
-    console.log('lightselector addselectable');
+    console.log('lightselector populatewithdata');
+    for(var i = 0; i < lights.length; i++)
+      ls.selectables[i] = ls.generateSelectableFromLight(lights[i], i);
+
+    ls.table.innerHTML = '';
+    for(var i = 0; i < ls.selectables.length; i++)
+      ls.table.appendChild(ls.selectables[i]);
+
     if(ls.selectedIndex != -1)
-      ls.selectableSelected(ls.selectables[ls.selectedIndex]);
-    var s = createSelectable(ls,'o',ls.selectables.length);
-    ls.selectables[ls.selectables.length] = s
-    ls.appendChild(s);
-    ls.selectableSelected(s);
+      ls.selectables[i].highlight();
   }
-  ls.removeSelectable = function()
+  ls.generateSelectableFromLight = function(light, index)
   {
-    console.log('lightselector removeselectable');
-    if(ls.selectables.length == 0) return;
-    if(ls.selectedIndex != -1)
-      ls.selectableSelected(ls.selectables[ls.selectedIndex]);
-    var s = ls.selectables[ls.selectables.length-1];
-    ls.selectables.splice(ls.selectables.length-1,1);
-    ls.removeChild(ls.children[ls.children.length-1]);
+    var s = createSelectable(ls, light, index);
+    s.innerHTML = 'light '+index;
+    return s;
   }
 
-  ls.selectableSelected = function(selectable)
+  ls.sSelected = function(s, light)
   {
-    console.log('lightselector selectableselected');
-    if(selectable.selected)
+    console.log('lightselector sselected');
+    if(s.selected)
     {
       ls.selectedIndex = -1;
-      selectable.unhighlight();
+      s.unhighlight();
     }
     else
     {
       if(ls.selectedIndex != -1)
-        ls.selectableSelected(ls.selectables[ls.selectedIndex]);
-      ls.selectedIndex = selectable.index;
-      selectable.highlight();
+        ls.selectables[ls.selectedIndex].unhighlight();
+      ls.selectedIndex = s.index;
+      s.highlight();
     }
-    delegate.newSelection(ls);
+    if(typeof delegate.lightSelected == 'function')
+      delegate.lightSelected(ls,ls.selectedIndex,light);
   }
+
+  //Construct
+  ls.appendChild(ls.addlightbutton);
+  ls.appendChild(ls.removelightbutton);
+
+  model.registerCallback('lightsUpdated',ls.populateWithData);
 
   return ls;
 }

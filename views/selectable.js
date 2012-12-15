@@ -1,15 +1,28 @@
-function createSelectable(delegate, content, index)
+function createSelectable(delegate, data, index)
 {
   console.log('creating selectable');
+
+  //Constants
+  var WIDTH = 50;
+  var HEIGHT = 20;
+
+  //Create
   var s = document.createElement('div');
-  s.innerHTML = content;
-  s.style.width = '20px';
-  s.style.height = '20px';
-  s.style.backgroundColor = 'white';
+  s.highlightcolor = 'yellow';
+  s.unhighlightcolor = 'white';
   s.selected = false;
+  s.data = data;
   s.index = index;
 
-  s.addEventListener('click',function(e){ console.log('selectable clicked'); delegate.selectableSelected(s) });
+  //Style
+  s.style.width = WIDTH+'px';
+  s.style.height = HEIGHT+'px';
+  s.style.margin = '0px';
+  s.style.padding = '0px';
+  s.style.backgroundcolor = s.unhighlightedcolor;
+
+  //Functionality
+  s.addEventListener('click',function(e){ console.log('selectable clicked'); if(typeof delegate.sSelected == 'function') delegate.sSelected(s,s.data); });
 
   s.highlight = function()
   {
