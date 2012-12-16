@@ -35,7 +35,7 @@ function createNormalinspector(delegate)
 
     normal = [];
     for(var i = 0; i < 3; i++)
-      normal[i] = ni.inputs[i].box.value;
+      normal[i] = parseFloat(ni.inputs[i].box.value);
     return normal;
   }
 

@@ -41,14 +41,15 @@ function createTriangleinspector(delegate)
     var triangle = {};
     triangle.vertexes = [];
     for(var i = 0; i < 3; i++)
-      triangle.vertexes[i] = ti.vertexes.getVertex();
+      triangle.vertexes[i] = ti.vertexes[i].getVertex();
+    return triangle;
   }
 
   ti.vertexChanged = function(vi,vertex)
   {
     console.log('triangleinspector vertexchanged');
     if(typeof delegate.triangleChanged == 'function')
-      delegate.triangleChanged(ti,ti.getTriangle);
+      delegate.triangleChanged(ti,ti.getTriangle());
   }
   ti.vertexFocused = function(vi,vertex)
   {
@@ -59,6 +60,7 @@ function createTriangleinspector(delegate)
   ti.vertexBlurred = function(vi,vertex)
   {
     console.log('triangleinspector vertexblurred');
+    ti.vertexChanged(vi,vertex);
     if(typeof delegate.triangleBlurred == 'function')
       delegate.triangleBlurred(ti);
   }

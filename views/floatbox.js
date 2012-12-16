@@ -41,7 +41,7 @@ function createFloatbox(delegate)
   fb.inc.addEventListener('click', function(e) { if(!isNaN(parseFloat(fb.box.value))) fb.box.value = parseFloat(fb.box.value)+INC_AMOUNT; if(typeof delegate.fbChanged == 'function') delegate.fbChanged(fb,fb.box.value); }, false);
   fb.dec.addEventListener('click', function(e) { if(!isNaN(parseFloat(fb.box.value))) fb.box.value = parseFloat(fb.box.value)-DEC_AMOUNT; if(typeof delegate.fbChanged == 'function') delegate.fbChanged(fb,fb.box.value); }, false);
   fb.box.addEventListener('focus', function(e) { if(typeof delegate.fbFocused == 'function') delegate.fbFocused(fb); }, false);
-  fb.box.addEventListener('blur', function(e) { if(typeof delegate.fbBlurred == 'function') delegate.fbBlurred(fb); }, false);
+  fb.box.addEventListener('blur', function(e) { if(isNaN(fb.box.value) || fb.box.value == '') fb.box.value = '0'; if(typeof delegate.fbBlurred == 'function') delegate.fbBlurred(fb); }, false);
 
   //Construct
   fb.appendChild(fb.dec);

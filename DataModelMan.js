@@ -13,6 +13,7 @@ function DataModelMan()
 
   self.createTriangle = function()
   {
+    console.log('datamodelman createtriangle');
     var t = {};
     t.vertexes = [];
     for(var i = 0; i < 3; i++)
@@ -27,12 +28,28 @@ function DataModelMan()
   }
   self.addTriangle = function(triangle)
   {
+    console.log('datamodelman addtriangle');
     self.triangles[self.triangles.length] = triangle;
     self.trianglesUpdated({'added':[triangle],'removed':[]});
+  }
+  self.removeTriangle = function(index)
+  {
+    console.log('datamodelman removetriangle');
+    var oldTriangle = self.triangles[index];
+    self.triangles.splice(index,1);
+    self.trianglesUpdated({'added':[],'removed':[oldTriangle]});
+  }
+  self.changeTriangle = function(triangle, index)
+  {
+    console.log('datamodelman changetriangle');
+    var oldTriangle = self.triangles[index];
+    self.triangles[index] = triangle;
+    self.trianglesUpdated({'added':[triangle],'removed':[oldTriangle]});
   }
 
   self.createLight = function()
   {
+    console.log('datamodelman createlight');
     var l = {};
     l.position = [0,0,0];
 
@@ -40,23 +57,41 @@ function DataModelMan()
   }
   self.addLight = function(light)
   {
+    console.log('datamodelman addlight');
     self.lights[self.lights.length] = light;
     self.lightsUpdated({'added':[light],'removed':[]});
+  }
+  self.removeLight = function(index)
+  {
+    console.log('datamodelman removelight');
+    var oldLight = self.lights[index];
+    self.lights.splice(index,1);
+    self.lightsUpdated({'added':[],'removed':[oldLight]});
+  }
+  self.changeLight = function(light, index)
+  {
+    console.log('datamodelman changelight');
+    var oldLight = self.lights[index];
+    self.lights[index] = light;
+    self.lightsUpdated({'added':[light],'removed':[oldLight]});
   }
 
   self.registerCallback = function(eventname,callback)
   {
+    console.log('datamodelman registercallback');
     callbackArray = self[eventname+'Callbacks'];
     if(callbackArray) 
       callbackArray[callbackArray.length] = callback;
   }
   self.trianglesUpdated = function(deltas)
   {
+    console.log('datamodelman trianglesupdated');
     for(var i = 0; i < self.trianglesUpdatedCallbacks.length; i++)
       self.trianglesUpdatedCallbacks[i](self.triangles, deltas);
   }
   self.lightsUpdated = function(deltas)
   {
+    console.log('datamodelman lightsupdated');
     for(var i = 0; i < self.lightsUpdatedCallbacks.length; i++)
       self.lightsUpdatedCallbacks[i](self.lights, deltas);
   }

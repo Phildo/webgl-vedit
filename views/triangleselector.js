@@ -19,6 +19,7 @@ function createTriangleselector(delegate, model)
   ts.populateWithData = function(triangles,deltas)
   {
     console.log('triangleselector populatewithdata');
+    ts.selectables = [];
     for(var i = 0; i < triangles.length; i++)
       ts.selectables[i] = ts.generateSelectableFromTriangle(triangles[i], i);
 
@@ -27,7 +28,7 @@ function createTriangleselector(delegate, model)
       ts.table.appendChild(ts.selectables[i]);
 
     if(ts.selectedIndex != -1)
-      ts.selectables[i].highlight();
+      ts.selectables[ts.selectedIndex].highlight();
   }
   ts.generateSelectableFromTriangle = function(triangle, index)
   {
@@ -53,6 +54,12 @@ function createTriangleselector(delegate, model)
     }
     if(typeof delegate.triangleSelected == 'function')
       delegate.triangleSelected(ts,ts.selectedIndex,triangle);
+  }
+
+  ts.clearSelection = function()
+  {
+    ts.selectables[ts.selectedIndex].unhighlight();
+    ts.selectedIndex = -1;
   }
 
   //Construct

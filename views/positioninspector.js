@@ -35,7 +35,7 @@ function createPositioninspector(delegate)
 
     position = [];
     for(var i = 0; i < 3; i++)
-      position[i] = pi.inputs[i].box.value;
+      position[i] = parseFloat(pi.inputs[i].box.value);
     return position;
   }
 

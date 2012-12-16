@@ -35,7 +35,7 @@ function createColorinspector(delegate)
 
     color = [];
     for(var i = 0; i < 3; i++)
-      color[i] = ci.inputs[i].box.value;
+      color[i] = parseFloat(ci.inputs[i].box.value);
     return color;
   }
 

@@ -52,6 +52,7 @@ function createLightinspector(delegate)
   li.positionBlurred = function(pi)
   {
     console.log('lightinspector positionblurred');
+    li.positionChanged(pi);
     if(typeof delegate.lightBlurred == 'function')
       delegate.lightBlurred(li);
   }

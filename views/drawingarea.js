@@ -56,7 +56,7 @@ function createDrawingarea(delegate, model)
     console.log('drawingarea edittriangles');
     if(deltas.removed.length > 0)//fuck it, redo the whole thing
     {
-      for(var i = 0; i < da.glTriangleCache; i++)
+      for(var i = 0; i < da.glTriangleCache.length; i++)
         da.glm.geoProgram.removeGeo(da.glTriangleCache[i]);
       da.glTriangleCache = [];
 
@@ -96,7 +96,7 @@ function createDrawingarea(delegate, model)
     console.log('drawingarea editlights');
     if(deltas.removed.length > 0)//fuck it, redo the whole thing
     {
-      for(var i = 0; i < da.glLightCache; i++)
+      for(var i = 0; i < da.glLightCache.length; i++)
         da.glm.geoProgram.removeLight(da.glLightCache[i]);
       da.glLightCache = [];
 

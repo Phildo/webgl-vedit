@@ -61,12 +61,23 @@ function UIMan(delegate, model)
     }
   }
 
-  self.addTriangleButtonClicked = function(ls)
+  self.addTriangleButtonClicked = function(ts)
   {
     console.log('uiman addtrianglebuttonclicked');
 
     if(typeof delegate.addTriangle == 'function')
       delegate.addTriangle();
+  }
+  self.removeTriangleButtonClicked = function(ts)
+  {
+    console.log('uiman removetrianglebuttonclicked');
+
+    var index = self.triangleselector.selectedIndex;
+    if(index == -1) return;
+    self.triangleselector.clearSelection();
+    self.triangleinspector.clearTriangle();
+    if(typeof delegate.removeTriangle == 'function')
+      delegate.removeTriangle(index);
   }
   self.addLightButtonClicked = function(ls)
   {
@@ -74,6 +85,17 @@ function UIMan(delegate, model)
 
     if(typeof delegate.addLight == 'function')
       delegate.addLight();
+  }
+  self.removeLightButtonClicked = function(ts)
+  {
+    console.log('uiman removelightbuttonclicked');
+
+    var index = self.lightselector.selectedIndex;
+    if(index == -1) return;
+    self.lightselector.clearSelection();
+    self.lightinspector.clearLight();
+    if(typeof delegate.removeLight == 'function')
+      delegate.removeLight(index);
   }
   self.triangleChanged = function(ti, triangle)
   {

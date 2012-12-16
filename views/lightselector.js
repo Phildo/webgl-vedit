@@ -19,6 +19,7 @@ function createLightselector(delegate, model)
   ls.populateWithData = function(lights,deltas)
   {
     console.log('lightselector populatewithdata');
+    ls.selectables = [];
     for(var i = 0; i < lights.length; i++)
       ls.selectables[i] = ls.generateSelectableFromLight(lights[i], i);
 
@@ -27,7 +28,7 @@ function createLightselector(delegate, model)
       ls.table.appendChild(ls.selectables[i]);
 
     if(ls.selectedIndex != -1)
-      ls.selectables[i].highlight();
+      ls.selectables[ls.selectedIndex].highlight();
   }
   ls.generateSelectableFromLight = function(light, index)
   {
@@ -53,6 +54,12 @@ function createLightselector(delegate, model)
     }
     if(typeof delegate.lightSelected == 'function')
       delegate.lightSelected(ls,ls.selectedIndex,light);
+  }
+
+  ls.clearSelection = function()
+  {
+    ls.selectables[ls.selectedIndex].unhighlight();
+    ls.selectedIndex = -1;
   }
 
   //Construct

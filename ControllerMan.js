@@ -10,6 +10,20 @@ function ControllerMan(model)
     model.addTriangle(model.createTriangle());
   }
 
+  self.removeTriangle = function(index)
+  {
+    console.log('controllerman removetriangle');
+
+    model.removeTriangle(index);
+  }
+
+  self.triangleChanged = function(triangle,index)
+  {
+    console.log('controllerman trianglechanged');
+
+    model.changeTriangle(triangle, index);
+  }
+
   self.addLight = function()
   {
     console.log('controllerman addlight');
@@ -17,18 +31,18 @@ function ControllerMan(model)
     model.addLight(model.createLight());
   }
 
-  self.triangleChanged(triangle,index)
+  self.removeLight = function(index)
   {
-    console.log('controllerman trianglechanged');
+    console.log('controllerman removelight');
 
-
+    model.removeLight(index);
   }
 
-  self.lightChanged(light,index)
+  self.lightChanged = function(light,index)
   {
     console.log('controllerman lightchanged');
 
-
+    model.changeLight(light, index);
   }
 }
   /*
