@@ -44,6 +44,18 @@ function ControllerMan(model)
 
     model.changeLight(light, index);
   }
+
+  self.loadJSON = function(json)
+  {
+    console.log('controllerman loadjson');
+
+  }
+
+  self.outputJSON = function()
+  {
+    console.log('controllerman outputjson');
+
+  }
 }
   /*
 

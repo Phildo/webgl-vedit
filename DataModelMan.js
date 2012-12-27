@@ -10,6 +10,7 @@ function DataModelMan()
   //by adding them to these arrays
   self.trianglesUpdatedCallbacks = [];
   self.lightsUpdatedCallbacks = [];
+  self.JSONUpdatedCallbacks = [];
 
   self.createTriangle = function()
   {
@@ -94,6 +95,12 @@ function DataModelMan()
     console.log('datamodelman lightsupdated');
     for(var i = 0; i < self.lightsUpdatedCallbacks.length; i++)
       self.lightsUpdatedCallbacks[i](self.lights, deltas);
+  }
+  self.JSONUpdated = function(newJSON)
+  {
+    console.log('datamodelman jsonupdated');
+    for(var i = 0; i < self.JSONUpdatedCallbacks.length; i++)
+      self.JSONUpdatedCallbacks[i](newJSON);
   }
 }
 /*

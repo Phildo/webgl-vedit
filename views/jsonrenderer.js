@@ -1,4 +1,4 @@
-function createJsonrenderer(delegate)
+function createJsonrenderer(delegate, model)
 {
   console.log('creating jsonrenderer');
   //Constants
@@ -11,8 +11,8 @@ function createJsonrenderer(delegate)
   jr.io = document.createElement('div');
   jr.inputbox = document.createElement('textarea');
   jr.outputbox = document.createElement('div');
-  jr.loadjsonbutton = createButton('load json', function(e) { console.log('jsonrenderer loadjsonbutonclick'); if(typeof delegate.loadJsonButtonClicked == 'function') delegate.loadJsonButtonClicked(jr); });
-  jr.outputjsonbutton = createButton('output json', function(e) { console.log('jsonrenderer outputjsonbutonclick'); if(typeof delegate.outputJsonButtonClicked == 'function') delegate.outputJsonButtonClicked(jr); });
+  jr.loadjsonbutton = createButton('load json', function(e) { console.log('jsonrenderer loadjsonbuttonclick'); if(typeof delegate.loadJsonButtonClicked == 'function') delegate.loadJsonButtonClicked(jr, jr.inputbox.value); });
+  jr.outputjsonbutton = createButton('output json', function(e) { console.log('jsonrenderer outputjsonbuttonclick'); if(typeof delegate.outputJsonButtonClicked == 'function') delegate.outputJsonButtonClicked(jr); });
 
   //Style
   jr.style.width = WIDTH+'px';
@@ -28,6 +28,13 @@ function createJsonrenderer(delegate)
   jr.outputbox.style.margin = '0px';
   jr.outputbox.style.padding = '0px';
   jr.outputbox.style.float = 'left';
+
+  jr.populateWithData = function(data)
+  {
+    jr.outputbox.innerHTML = data;
+  }
+  
+  model.registerCallback('JSONUpdated',jr.populateWithData);
 
   //Construct
   jr.appendChild(jr.loadjsonbutton);

@@ -11,7 +11,7 @@ function UIMan(delegate, model)
   self.lightinspector = createLightinspector(self);
   self.triangleselector = createTriangleselector(self, model);
   self.lightselector = createLightselector(self, model);
-  self.jsonrenderer = createJsonrenderer(self);
+  self.jsonrenderer = createJsonrenderer(self, model);
 
   //Style
   self.veditor = document.getElementById('veditor'); //The whole page/app
@@ -96,6 +96,18 @@ function UIMan(delegate, model)
     self.lightinspector.clearLight();
     if(typeof delegate.removeLight == 'function')
       delegate.removeLight(index);
+  }
+  self.loadJsonButtonClicked = function(jr, json)
+  {
+    console.log('uiman loadjsonbuttonclicked');
+    if(typeof delegate.loadJson == 'function')
+      delegate.loadJson(json);
+  }
+  self.outputJsonButtonClicked = function(jr)
+  {
+    console.log('uiman outputjsonbuttonclicked');
+    if(typeof delegate.outputJson == 'function')
+      delegate.outputJson();
   }
   self.triangleChanged = function(ti, triangle)
   {
