@@ -10,7 +10,7 @@ function DataModelMan()
   //by adding them to these arrays
   self.trianglesUpdatedCallbacks = [];
   self.lightsUpdatedCallbacks = [];
-  self.JSONUpdatedCallbacks = [];
+  self.stateDeclaredCallbacks = [];
 
   self.createTriangle = function()
   {
@@ -39,6 +39,13 @@ function DataModelMan()
     var oldTriangle = self.triangles[index];
     self.triangles.splice(index,1);
     self.trianglesUpdated({'added':[],'removed':[oldTriangle]});
+  }
+  self.removeAllTriangles = function()
+  {
+    console.log('datamodelman removealltriangles');
+    var oldTriangles = self.triangles;
+    self.triangles = [];
+    self.trianglesUpdated({'added':[],'removed':oldTriangles});
   }
   self.changeTriangle = function(triangle, index)
   {
@@ -69,12 +76,23 @@ function DataModelMan()
     self.lights.splice(index,1);
     self.lightsUpdated({'added':[],'removed':[oldLight]});
   }
+  self.removeAllLights = function()
+  {
+    console.log('datamodelman removealllights');
+    var oldLights = self.lights;
+    self.lights = [];
+    self.lightsUpdated({'added':[],'removed':oldLights});
+  }
   self.changeLight = function(light, index)
   {
     console.log('datamodelman changelight');
     var oldLight = self.lights[index];
     self.lights[index] = light;
     self.lightsUpdated({'added':[light],'removed':[oldLight]});
+  }
+  self.requestStateDeclaration = function()
+  {
+    self.stateDeclared();
   }
 
   self.registerCallback = function(eventname,callback)
@@ -96,11 +114,11 @@ function DataModelMan()
     for(var i = 0; i < self.lightsUpdatedCallbacks.length; i++)
       self.lightsUpdatedCallbacks[i](self.lights, deltas);
   }
-  self.JSONUpdated = function(newJSON)
+  self.stateDeclared = function()
   {
-    console.log('datamodelman jsonupdated');
-    for(var i = 0; i < self.JSONUpdatedCallbacks.length; i++)
-      self.JSONUpdatedCallbacks[i](newJSON);
+    console.log('datamodelman statedeclared');
+    for(var i = 0; i < self.stateDeclaredCallbacks.length; i++)
+      self.stateDeclaredCallbacks[i](self.triangles, self.lights);
   }
 }
 /*

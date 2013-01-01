@@ -19,6 +19,8 @@ function createTriangleselector(delegate, model)
   ts.populateWithData = function(triangles,deltas)
   {
     console.log('triangleselector populatewithdata');
+    if(triangles.length <= ts.selectedIndex) ts.clearSelection();//HACK UGH BAD CODE NO BAD BAD BAD
+
     ts.selectables = [];
     for(var i = 0; i < triangles.length; i++)
       ts.selectables[i] = ts.generateSelectableFromTriangle(triangles[i], i);

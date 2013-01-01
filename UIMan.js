@@ -97,11 +97,11 @@ function UIMan(delegate, model)
     if(typeof delegate.removeLight == 'function')
       delegate.removeLight(index);
   }
-  self.loadJsonButtonClicked = function(jr, json)
+  self.loadJsonButtonClicked = function(jr, triangles, lights)
   {
     console.log('uiman loadjsonbuttonclicked');
     if(typeof delegate.loadJson == 'function')
-      delegate.loadJson(json);
+      delegate.loadJson(triangles, lights);
   }
   self.outputJsonButtonClicked = function(jr)
   {

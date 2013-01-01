@@ -19,6 +19,8 @@ function createLightselector(delegate, model)
   ls.populateWithData = function(lights,deltas)
   {
     console.log('lightselector populatewithdata');
+    if(lights.length <= ls.selectedIndex) ls.clearSelection();//HACK UGH BAD CODE NO BAD BAD BAD
+
     ls.selectables = [];
     for(var i = 0; i < lights.length; i++)
       ls.selectables[i] = ls.generateSelectableFromLight(lights[i], i);
